@@ -1,0 +1,17 @@
+[Unit]
+Description=Fincubes FastAPI app
+After=network.target redis.service postgresql.service docker.service
+Requires=redis.service postgresql.service docker.service
+
+
+[Service]
+User=root
+WorkingDirectory=/root/fincubes
+ExecStart=/usr/bin/docker run --env-file ./.env -p 8000:8000 --network=host --name fincubes-fastapi fincubes-fastapi
+ExecStop=/usr/bin/docker stop fincubes-fastapi
+ExecStopPost=/usr/bin/docker rm fincubes-fastapi
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
