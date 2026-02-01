@@ -1,13 +1,13 @@
 [Unit]
 Description=Fincubes FastAPI app
-After=network.target redis.service postgresql.service docker.service
-Requires=redis.service postgresql.service docker.service
+After=network.target docker.service
+Requires=docker.service
 
 
 [Service]
 User=root
-WorkingDirectory=/root/fincubes
-ExecStart=/usr/bin/docker run --env-file ./.env -p 8000:8000 --network=host --name fincubes-fastapi fincubes-fastapi
+WorkingDirectory=/root/fincubes-fastapi
+ExecStart=doppler run -- "/usr/bin/docker run --network=host -v /home/ruvds/fincubes-logs:/app/logs --name fincubes-fastapi fincubes-fastapi"
 ExecStop=/usr/bin/docker stop fincubes-fastapi
 ExecStopPost=/usr/bin/docker rm fincubes-fastapi
 Restart=always

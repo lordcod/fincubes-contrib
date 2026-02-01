@@ -7,7 +7,7 @@ User=root
 WorkingDirectory=/root/fincubes-admin
 Environment=NODE_ENV=production
 Environment=PORT=3001
-ExecStart=/bin/bash -c "source /root/.nvm/nvm.sh && nvm use 24.12.0 && npm run start"
+ExecStart=/bin/bash -c "source /root/.nvm/nvm.sh && nvm use 24.12.0 &&  doppler run -- npm run start"
 Restart=always
 RestartSec=10
 StandardOutput=journal
