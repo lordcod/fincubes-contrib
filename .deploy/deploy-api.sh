@@ -147,12 +147,8 @@ https://nginx.org/packages/mainline/ubuntu `lsb_release -cs` nginx" \
 }
 
 install_certbot() {
-    ensure_pkg snapd
-    sudo snap install --classic certbot
-
-    if [ ! -L /usr/bin/certbot ]; then
-        sudo ln -s /snap/bin/certbot /usr/bin/certbot
-    fi
+    apt-get update
+    apt-get install -y certbot python3-certbot-nginx
 }
 
 install_doppler() {
