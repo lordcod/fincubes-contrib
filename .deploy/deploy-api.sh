@@ -111,6 +111,18 @@ setup_nginx() {
     setup_nginx_site "$@"
 }
 
+download_deploy_files() {
+    local base="${DEPLOY_FILES_BASE:-https://raw.githubusercontent.com/lordcod/fincubes-contrib/main/.deploy/files}"
+    local files_dir="/tmp/fincubes-deploy/files"
+
+    mkdir -p "$files_dir/systemd" "$files_dir/nginx"
+
+    curl -fsSL "$base/systemd/$SERVICE" -o "$files_dir/systemd/$SERVICE"
+    curl -fsSL "$base/nginx/$NGINX" -o "$files_dir/nginx/$NGINX"
+
+    FILES="$files_dir"
+}
+
 install_nginx() {
     sudo apt install -y curl gnupg2 ca-certificates lsb-release ubuntu-keyring
 
@@ -194,6 +206,7 @@ poetry install
 
 doppler run -- sudo docker build -t "$IMAGE" .
 
+download_deploy_files
 setup_systemd \
     "$SERVICE" \
     "$FILES/systemd/$SERVICE"
